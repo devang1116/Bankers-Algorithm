@@ -9,9 +9,9 @@
 
 int main()
 {
-    int processes, resources, process = 0, count;
-    count = 0;
+    int processes, resources, process = 0, count = 0;
     
+    //MARK: Input
     printf("Enter the Number of Processes : ");
     scanf("%d",&processes);
     
@@ -27,17 +27,16 @@ int main()
     
     for(int i = 0 ; i < processes ; i++)
     {
-        printf("Process %d Max : " , i+1);
+        printf("Process %d Max Resources : " , i+1);
         for(int j = 0 ; j < resources ; j++)
         {
             scanf("%d" , &max[i][j]);
-            
         }
     }
     
     for(int i = 0 ; i < processes ; i++)
     {
-        printf("Process %d Allocated : " , i+1);
+        printf("Process %d Allocated Resources : " , i+1);
         for(int j = 0 ; j < resources ; j++)
         {
             scanf("%d" , &allocated[i][j]);
@@ -51,6 +50,7 @@ int main()
         printf("%d" , available[i]);
     }
     
+    // Calculate Process Requirements
     for(int i = 0 ; i < processes ; i++)
     {
         for(int j = 0 ; j < resources ; j++)
@@ -61,12 +61,17 @@ int main()
     
     int done = processes;
     
+    //MARK: Bankers Algorithm
     while(done != 0)
     {
         int safeOrNot = 0;
+        
+        // iterating over the number of processes
         for(int i = 0 ; i < processes ; i++)
         {
             count = 0;
+            
+            // if the process hasnt completed its execution
             if(completed[i] == 0)
             {
                 for(int j = 0 ; j < resources ; j++)
@@ -77,6 +82,8 @@ int main()
                         break;
                     }
                 }
+                
+                // if the current process executed successfully
                 if(count == 0)
                 {
                     completed[i] = 1;
@@ -90,7 +97,7 @@ int main()
                     done--;
                 }
                 
-                printf("\n Max matrix:\tAllocation matrix:\tNeed Matrix\tAvailable Matrix\n");
+                printf("\nMax matrix:\tAllocation matrix:\t\tNeed Matrix\t\tAvailable Matrix\n");
                 for(int a = 0; a < processes; a++)
                 {
                     for(int b = 0; b < resources; b++)
@@ -109,6 +116,7 @@ int main()
             }
         }
         
+        // if over a loop no change in var then it is in deadlock
         if(safeOrNot == 0)
         {
             break;
@@ -117,8 +125,7 @@ int main()
     
     printf("%d",done);
     
-    
-    
+    //MARK: Conclusion
     if(done == 0)
     {
         printf("\nThe system is in a safe state \n");
